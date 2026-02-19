@@ -55,3 +55,14 @@ Why Upstash over self-hosted Redis:
 7. **Route prefetching** — automatic prefetch of visible links
 8. **Code splitting** — automatic per-route, dynamic imports
 9. **Turbopack** — 5-10x faster HMR than Webpack
+
+## Deep-Dive Topics (Feb 2026)
+
+For detailed configurations, benchmarks, and implementation examples, see:
+
+- [caching-multilayer.md](caching-multilayer.md) — Multi-layer architecture, Cache-Control headers, HybridCache (.NET 9), caching strategies
+- [redis-configuration.md](redis-configuration.md) — Redis Cluster (6+ nodes), Sentinel HA, eviction policies, Streams, Pub/Sub invalidation
+- [caching-cdn-assets.md](caching-cdn-assets.md) — Self-hosted Nginx CDN, asset fingerprinting, WebP/AVIF, Brotli/gzip compression
+- [frontend-performance-deep.md](frontend-performance-deep.md) — Code splitting, Service Workers, Web Workers + Comlink, virtual scrolling, RSC + streaming SSR
+- [api-performance.md](api-performance.md) — Response compression, ETags, cursor pagination, GraphQL vs REST vs gRPC-Web
+- [realtime-at-scale.md](realtime-at-scale.md) — SignalR + Redis backplane, WebSocket load balancing, SSE alternative

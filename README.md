@@ -501,6 +501,35 @@ The `.claude/pre-requisites/technology-stack-decision.md` document contains the 
 
 ---
 
+## Scaling & Performance (NEW — Feb 2026)
+
+For enterprise deployments serving large companies with massive data and many concurrent users, see:
+
+- **[SCALING-GUIDE.md](SCALING-GUIDE.md)** — Comprehensive guide covering architecture, database scaling, caching, monitoring, container orchestration, and load testing for dedicated servers
+- **[mvp-performance/](mvp-performance/)** — Runnable Docker Compose environment with ASP.NET Core API, PostgreSQL, Redis, Prometheus, Grafana, Jaeger, k6 load tests, and Nginx
+
+### Quick Start (MVP Performance)
+
+```bash
+cd mvp-performance
+docker compose up -d
+# Open Grafana: http://localhost:3000 (admin/admin)
+# Run load test: docker compose --profile loadtest up
+```
+
+### Research Reports
+
+| Topic | Report |
+|-------|--------|
+| .NET/EF Core Scalability | [dotnet-efcore-scalability-report.md](.claude/pre-requisites/dotnet-efcore-scalability-report.md) |
+| Database Scaling | [efcore-database-scaling-report.md](.claude/pre-requisites/efcore-database-scaling-report.md) |
+| Monitoring & Observability | [dotnet-monitoring-observability-report.md](.claude/pre-requisites/dotnet-monitoring-observability-report.md) |
+| Load Testing & Benchmarking | [dotnet-load-testing-performance-report.md](.claude/pre-requisites/dotnet-load-testing-performance-report.md) |
+| Container Orchestration | [dotnet-container-orchestration.md](.claude/topics/dotnet-container-orchestration.md) |
+| Caching Deep-Dive | [caching-multilayer.md](.claude/topics/caching-multilayer.md) |
+
+---
+
 ## Roadmap
 
 - [x] Phase 1: Technology Research & Stack Selection
@@ -508,9 +537,11 @@ The `.claude/pre-requisites/technology-stack-decision.md` document contains the 
 - [x] Phase 2b: Shared Packages (types, mock data, auth store)
 - [x] Phase 3: Expo Mobile App — scaffolded (login, dashboard, invoices, profile)
 - [x] Phase 4: Tauri Desktop Wrapper — scaffolded (system tray, window config, icons)
-- [ ] Phase 5: Full Design System (Storybook)
-- [ ] Phase 6: eFakt2 Migration
-- [ ] Phase 7: cvs_ls26 Migration
+- [x] Phase 5a: Scaling Research — architecture, monitoring, database, caching, orchestration, load testing
+- [x] Phase 5b: MVP Performance Solution — Docker Compose reference with full observability stack
+- [ ] Phase 6: Full Design System (Storybook)
+- [ ] Phase 7: eFakt2 Migration
+- [ ] Phase 8: cvs_ls26 Migration
 
 > **Phases 3 & 4** are scaffolded with working app shells, navigation, and shared data. They need dependency installation and platform toolchain setup to run (see "How to Test Each Platform" above).
 
