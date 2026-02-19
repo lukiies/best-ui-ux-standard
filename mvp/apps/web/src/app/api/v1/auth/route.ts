@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { users } from "@/data/mock-data";
+import { users } from "@repo/shared";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();

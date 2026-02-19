@@ -1,4 +1,4 @@
-import type { User, Invoice, AppModule, Setting, MenuItem } from "@/lib/types";
+import type { User, Invoice, InvoiceItem, AppModule, Setting, MenuItem } from "./types";
 
 // ============================================================================
 // Application Modules
@@ -84,7 +84,7 @@ export const users: User[] = [
 // Sample Invoices
 // ============================================================================
 
-function makeItems(count: number): import("@/lib/types").InvoiceItem[] {
+function makeItems(count: number): InvoiceItem[] {
   const products = [
     "Web Development Services", "UI/UX Design", "Cloud Hosting (Annual)", "SSL Certificate",
     "Database Optimization", "API Integration", "Mobile App Module", "Technical Support (Monthly)",

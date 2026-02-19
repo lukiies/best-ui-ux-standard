@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { users } from "@/data/mock-data";
+import { users } from "@repo/shared";
 
 const VALID_API_KEYS = ["demo-key-superadmin-001", "demo-key-admin-002"];
 

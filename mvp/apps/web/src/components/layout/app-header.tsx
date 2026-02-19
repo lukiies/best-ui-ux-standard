@@ -10,9 +10,8 @@ import {
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Moon, Sun, User, ArrowRightLeft } from "lucide-react";
-import { useAuthStore } from "@/stores/auth-store";
+import { useAuthStore, users } from "@repo/shared";
 import { useTheme } from "next-themes";
-import { users } from "@/data/mock-data";
 
 const roleBadge: Record<string, { label: string; variant: "default" | "secondary" | "outline" }> = {
   superadmin: { label: "Super Admin", variant: "default" },

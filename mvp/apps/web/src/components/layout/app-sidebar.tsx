@@ -11,9 +11,8 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, Zap } from "lucide-react";
 import { DynamicIcon } from "./icon-map";
-import { useAuthStore } from "@/stores/auth-store";
-import { menuItems } from "@/data/mock-data";
-import type { MenuItem } from "@/lib/types";
+import { useAuthStore, menuItems } from "@repo/shared";
+import type { MenuItem } from "@repo/shared";
 
 export function AppSidebar() {
   const pathname = usePathname();

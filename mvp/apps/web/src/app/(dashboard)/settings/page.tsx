@@ -8,9 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search } from "lucide-react";
-import { useAuthStore } from "@/stores/auth-store";
-import { settings, appModules } from "@/data/mock-data";
-import type { Setting } from "@/lib/types";
+import { useAuthStore, settings, appModules } from "@repo/shared";
+import type { Setting } from "@repo/shared";
 
 function SettingControl({ setting }: { setting: Setting }) {
   const [value, setValue] = useState(setting.value);

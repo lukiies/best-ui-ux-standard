@@ -14,9 +14,8 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Search, Maximize2, Minimize2, X, Plus, Download, FileText, Calendar, Building2 } from "lucide-react";
-import { invoices } from "@/data/mock-data";
-import { useAuthStore } from "@/stores/auth-store";
-import type { Invoice } from "@/lib/types";
+import { invoices, useAuthStore } from "@repo/shared";
+import type { Invoice } from "@repo/shared";
 
 const statusColors: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   paid: "default", sent: "secondary", overdue: "destructive", draft: "outline", cancelled: "outline",

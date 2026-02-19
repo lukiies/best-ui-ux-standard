@@ -8,8 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Zap } from "lucide-react";
-import { useAuthStore } from "@/stores/auth-store";
-import { users } from "@/data/mock-data";
+import { useAuthStore, users } from "@repo/shared";
 
 export default function LoginPage() {
   const router = useRouter();

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
@@ -9,9 +9,27 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "UI/UX Standard — Enterprise Platform",
+  applicationName: "UI/UX Standard",
+  title: {
+    default: "UI/UX Standard \u2014 Enterprise Platform",
+    template: "%s | UI/UX Standard",
+  },
   description: "Reference implementation of the UI/UX standard for cross-platform enterprise applications",
-  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "UI/UX Standard",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0f172a",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -21,6 +39,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <Providers>{children}</Providers>
       </body>

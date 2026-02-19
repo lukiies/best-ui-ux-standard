@@ -3,8 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Users, Package, TrendingUp, DollarSign, ShoppingCart, AlertCircle } from "lucide-react";
-import { useAuthStore } from "@/stores/auth-store";
-import { invoices } from "@/data/mock-data";
+import { useAuthStore, invoices } from "@repo/shared";
 
 const stats = [
   { label: "Total Invoices", value: "50", change: "+12%", icon: FileText, moduleId: "invoices" },

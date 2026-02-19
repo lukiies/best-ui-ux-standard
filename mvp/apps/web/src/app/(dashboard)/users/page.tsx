@@ -7,8 +7,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { Plus, Shield } from "lucide-react";
-import { useAuthStore } from "@/stores/auth-store";
-import { users, appModules } from "@/data/mock-data";
+import { useAuthStore, users, appModules } from "@repo/shared";
 
 const roleBadge: Record<string, "default" | "secondary" | "outline"> = {
   superadmin: "default", admin: "secondary", user: "outline",
