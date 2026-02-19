@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Edit(*)",
+      "Write(*)",
+      "Read(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "Task(*)",
+      "TodoWrite(*)",
+      "NotebookEdit(*)",
+      "mcp__enhanced-rlm__ask_knowledge_base",
+      "mcp__enhanced-rlm__list_knowledge_base",
+      "mcp__enhanced-rlm__clear_knowledge_cache",
+      "mcp__enhanced-rlm__get_kb_session_stats",
+      "mcp__enhanced-rlm__reset_kb_session_stats"
+    ]
+  }
+}

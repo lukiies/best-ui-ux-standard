@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "enhanced-rlm": {
+      "type": "stdio",
+      "command": "C:\\Users\\lukii\\OneDrive - ITAnalytics Ltd\\Documents\\Visual Studio Programs\\cc-mpc-extended-rlm\\start_server.bat",
+      "args": [
+        "--path",
+        "C:\\Users\\lukii\\OneDrive - ITAnalytics Ltd\\Documents\\Projects\\Research\\Best UI_UX standard"
+      ],
+      "env": {}
+    }
+  }
+}
