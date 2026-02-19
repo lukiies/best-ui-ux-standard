@@ -105,7 +105,6 @@ export default function InvoiceListScreen() {
       <FlashList
         data={filtered}
         renderItem={renderItem}
-        estimatedItemSize={80}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => (
           <View style={{ height: StyleSheet.hairlineWidth, backgroundColor: theme.colors.outlineVariant }} />

@@ -1,12 +1,48 @@
+# Dependencies
 node_modules/
+
+# Build outputs
 .next/
 dist/
 out/
+build/
+*.tsbuildinfo
+.turbo/
+
+# Rust / Tauri
+**/src-tauri/target/
+**/src-tauri/gen/
+
+# Expo / React Native
+.expo/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Environment
 .env
 .env.local
 .env.*.local
+
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test recordings / large media
+mvp_tests/
+
+# OS
 .DS_Store
 Thumbs.db
-*.tsbuildinfo
-.turbo/
+desktop.ini
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Lock files (pnpm monorepo — only pnpm-lock.yaml matters)
+package-lock.json

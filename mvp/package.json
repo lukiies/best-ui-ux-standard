@@ -20,5 +20,8 @@
     "overrides": {
       "@types/react": "19.1.17"
     }
+  },
+  "devDependencies": {
+    "turbo": "^2.8.10"
   }
 }
