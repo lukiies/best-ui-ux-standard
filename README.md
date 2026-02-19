@@ -8,13 +8,32 @@ The definitive UI/UX technology stack and design standard for building cross-pla
 
 ## Quick Start — Run the MVP
 
+**Web (fastest way to see everything):**
 ```bash
 cd mvp/apps/web
 npm install
 npm run dev
 ```
-
 Open [http://localhost:3000](http://localhost:3000) — you'll see the login page with demo quick-access buttons.
+
+**Mobile (iOS/Android via Expo Go):**
+```bash
+cd mvp/apps/mobile
+npm install
+npx expo start
+```
+Scan the QR code with the Expo Go app on your phone.
+
+**Desktop (Tauri — requires Rust):**
+```bash
+# Terminal 1: start the web app
+cd mvp/apps/web && npm run dev
+
+# Terminal 2: start Tauri wrapper
+cd mvp/apps/desktop && npm install && npm run dev
+```
+
+> See **"How to Test Each Platform"** below for detailed instructions, prerequisites, and troubleshooting.
 
 ### Demo Accounts
 
@@ -76,18 +95,173 @@ You can switch between users in real-time via the avatar dropdown in the header.
 | Platform | Technology | Status |
 |----------|-----------|--------|
 | Web (Browser) | Next.js — full SSR/SSG SPA | **MVP Ready** |
-| Windows Desktop | PWA via Edge/Chrome | **MVP Ready** (install from browser) |
-| macOS Desktop | PWA via Chrome/Edge | **MVP Ready** |
-| iOS | Expo (React Native) | Planned (Phase 2) |
-| Android | Expo (React Native) | Planned (Phase 2) |
-| Windows Native | Tauri 2.0 (when PWA isn't enough) | Planned (Phase 3) |
+| Windows Desktop (PWA) | PWA via Edge/Chrome | **MVP Ready** (install from browser) |
+| macOS Desktop (PWA) | PWA via Chrome/Edge | **MVP Ready** |
+| iOS | Expo (React Native) | **Scaffolded** — login, dashboard, invoices, profile |
+| Android | Expo (React Native) | **Scaffolded** — login, dashboard, invoices, profile |
+| Windows/macOS/Linux Native | Tauri 2.0 (wraps web app) | **Scaffolded** — system tray, window config, icons |
 
-### Testing the PWA
+---
 
-1. Run `npm run dev` (or `npm run build && npm start` for production)
-2. Open in **Chrome** or **Edge**
-3. Click the "Install" icon in the address bar
-4. The app installs as a desktop application with its own window
+## How to Test Each Platform
+
+### 1. Web (Browser)
+
+The simplest way — just run the Next.js dev server.
+
+```bash
+cd mvp/apps/web
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in any browser. You'll see the login page with demo quick-access buttons.
+
+### 2. PWA — Windows / macOS Desktop
+
+The web app includes a PWA manifest (`standalone` display mode). When installed, it behaves like a native desktop app with its own window, taskbar icon, and no browser chrome.
+
+**Install as PWA:**
+1. Run the web app: `cd mvp/apps/web && npm run dev`
+2. Open [http://localhost:3000](http://localhost:3000) in **Chrome** or **Edge**
+3. Click the **install icon** (⊕) in the address bar (or the "Install app" prompt)
+4. The app installs as a standalone desktop application
+5. It appears in your Start Menu (Windows) or Applications folder (macOS)
+
+**For production-quality PWA testing:**
+```bash
+cd mvp/apps/web
+npm run build
+npm start
+```
+Then install from [http://localhost:3000](http://localhost:3000) — this gives you the optimized production build.
+
+**Uninstall:** Open the PWA → click the three-dot menu (top-right) → "Uninstall"
+
+### 3. iOS (Expo / React Native)
+
+**Prerequisites:**
+- Node.js 18+
+- [Expo CLI](https://docs.expo.dev/get-started/installation/) (`npm install -g expo-cli` or use `npx expo`)
+- **For iOS Simulator:** macOS with Xcode installed (from Mac App Store)
+- **For physical iPhone:** [Expo Go](https://apps.apple.com/app/expo-go/id982107779) app from the App Store
+
+**Run on iOS Simulator (macOS only):**
+```bash
+cd mvp/apps/mobile
+npm install
+npx expo start --ios
+```
+This will open the iOS Simulator and load the app automatically.
+
+**Run on physical iPhone:**
+```bash
+cd mvp/apps/mobile
+npm install
+npx expo start
+```
+1. A QR code will appear in the terminal
+2. Open the **Expo Go** app on your iPhone
+3. Scan the QR code (or tap the link in the terminal)
+4. The app loads on your device over the local network
+
+> **Note:** Your phone and computer must be on the same Wi-Fi network. If you have firewall issues, try `npx expo start --tunnel` (requires `@expo/ngrok` — Expo will prompt to install it).
+
+**Build a standalone iOS app (for TestFlight / App Store):**
+```bash
+npx eas build --platform ios
+```
+This requires an [Expo Application Services (EAS)](https://expo.dev/eas) account and an Apple Developer Program membership ($99/year).
+
+### 4. Android (Expo / React Native)
+
+**Prerequisites:**
+- Node.js 18+
+- **For Android Emulator:** [Android Studio](https://developer.android.com/studio) with an AVD (Android Virtual Device) configured
+- **For physical Android phone:** [Expo Go](https://play.google.com/store/apps/details?id=host.exp.exponent) from Google Play
+
+**Run on Android Emulator:**
+```bash
+cd mvp/apps/mobile
+npm install
+npx expo start --android
+```
+This will launch the Android Emulator and install the app.
+
+**Run on physical Android phone:**
+```bash
+cd mvp/apps/mobile
+npm install
+npx expo start
+```
+1. A QR code will appear in the terminal
+2. Open the **Expo Go** app on your Android phone
+3. Scan the QR code
+4. The app loads on your device over the local network
+
+> **Tip:** If using Windows, you may need to allow the Expo dev server through Windows Firewall. The port is typically `8081`.
+
+**Build a standalone Android APK/AAB:**
+```bash
+# APK for direct installation (testing)
+npx eas build --platform android --profile preview
+
+# AAB for Google Play Store
+npx eas build --platform android
+```
+
+### 5. Native Desktop — Tauri 2.0 (Windows / macOS / Linux)
+
+Tauri wraps the web app in a native window with system tray integration. It uses the OS WebView (Edge WebView2 on Windows, WebKit on macOS) — no bundled Chromium, so the binary is very small (~5-10 MB).
+
+**Prerequisites:**
+- The **web app must be running** (`cd mvp/apps/web && npm run dev`)
+- **Rust toolchain:** Install from [https://rustup.rs](https://rustup.rs)
+  ```bash
+  # Windows: download and run rustup-init.exe from https://rustup.rs
+  # macOS/Linux:
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  ```
+- **Windows additional:** Microsoft Visual Studio C++ Build Tools (the Rust installer will guide you)
+- **Linux additional:** `sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev`
+
+**Run in development mode:**
+```bash
+# Terminal 1 — start the web app
+cd mvp/apps/web
+npm run dev
+
+# Terminal 2 — start Tauri (wraps the web app)
+cd mvp/apps/desktop
+npm install
+npm run dev
+```
+A native window opens showing the web app with system tray icon. The tray has "Show Window" and "Quit" options.
+
+**Build a distributable binary:**
+```bash
+# Make sure the web app is built first
+cd mvp/apps/web && npm run build
+
+# Build the Tauri app
+cd mvp/apps/desktop
+npm run build
+```
+The output binary is in `mvp/apps/desktop/src-tauri/target/release/bundle/`:
+- **Windows:** `.msi` installer and `.exe` in `nsis/`
+- **macOS:** `.dmg` and `.app` in `macos/`
+- **Linux:** `.deb`, `.AppImage` in their respective folders
+
+### Platform Testing Checklist
+
+| Test | Web | PWA | iOS | Android | Tauri |
+|------|-----|-----|-----|---------|-------|
+| Login (demo accounts) | `npm run dev` | Install from Chrome | `npx expo start --ios` | `npx expo start --android` | `npm run dev` (both terminals) |
+| Dashboard KPIs | Browser | Installed app | Expo Go / Simulator | Expo Go / Emulator | Native window |
+| Invoice master-detail | Browser | Installed app | Tap invoice in list | Tap invoice in list | Native window |
+| Role switching | Avatar dropdown | Avatar dropdown | Profile tab → logout | Profile tab → logout | Avatar dropdown |
+| Dark mode | Theme toggle | Theme toggle | Follows OS setting | Follows OS setting | Theme toggle |
+| Offline capable | Limited (SSR) | Yes (after install) | Via Expo Go | Via Expo Go | Yes (cached) |
 
 ---
 
@@ -134,32 +308,61 @@ The detail panel supports **maximize/minimize** — users can zoom into a docume
 ```
 mvp/
 ├── apps/
-│   └── web/                    ← Next.js 16 (App Router)
-│       ├── src/
-│       │   ├── app/
-│       │   │   ├── (auth)/login/       ← Login page
-│       │   │   ├── (dashboard)/        ← Protected layout with sidebar
-│       │   │   │   ├── dashboard/      ← Dashboard (KPIs, alerts)
-│       │   │   │   ├── invoices/       ← Master-detail invoice module
-│       │   │   │   ├── customers/      ← Customer module (placeholder)
-│       │   │   │   ├── products/       ← Product module (placeholder)
-│       │   │   │   ├── warehouse/      ← Warehouse module (placeholder)
-│       │   │   │   ├── reports/        ← Reports module (placeholder)
-│       │   │   │   ├── settings/       ← Scoped settings page
-│       │   │   │   └── users/          ← User & permission management
-│       │   │   └── api/v1/             ← RESTful API routes
-│       │   ├── components/
-│       │   │   ├── ui/                 ← shadcn/ui components
-│       │   │   └── layout/            ← App shell (sidebar, header)
-│       │   ├── stores/                ← Zustand stores
-│       │   ├── data/                  ← Mock data
-│       │   └── lib/                   ← Types, utilities
-│       └── public/
-│           └── manifest.json          ← PWA manifest
+│   ├── web/                    ← Next.js 16 (App Router) — full MVP
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   │   ├── (auth)/login/       ← Login page
+│   │   │   │   ├── (dashboard)/        ← Protected layout with sidebar
+│   │   │   │   │   ├── dashboard/      ← Dashboard (KPIs, alerts)
+│   │   │   │   │   ├── invoices/       ← Master-detail invoice module
+│   │   │   │   │   ├── customers/      ← Customer module (placeholder)
+│   │   │   │   │   ├── products/       ← Product module (placeholder)
+│   │   │   │   │   ├── warehouse/      ← Warehouse module (placeholder)
+│   │   │   │   │   ├── reports/        ← Reports module (placeholder)
+│   │   │   │   │   ├── settings/       ← Scoped settings page
+│   │   │   │   │   └── users/          ← User & permission management
+│   │   │   │   ├── api/v1/             ← RESTful API routes
+│   │   │   │   └── manifest.ts         ← PWA manifest (standalone mode)
+│   │   │   ├── components/
+│   │   │   │   ├── ui/                 ← shadcn/ui components
+│   │   │   │   └── layout/            ← App shell (sidebar, header)
+│   │   │   ├── stores/                ← Zustand stores
+│   │   │   ├── data/                  ← Mock data
+│   │   │   └── lib/                   ← Types, utilities
+│   │   └── next.config.ts
+│   │
+│   ├── mobile/                 ← Expo SDK 54 (React Native) — scaffolded
+│   │   ├── app/
+│   │   │   ├── _layout.tsx            ← Root layout (Paper theme, auth redirect)
+│   │   │   ├── (auth)/login.tsx       ← Login with demo quick access
+│   │   │   └── (tabs)/               ← Tab navigation
+│   │   │       ├── index.tsx          ← Dashboard (KPIs, alerts, recent invoices)
+│   │   │       ├── invoices/          ← Invoice list + detail view
+│   │   │       └── profile.tsx        ← User profile & logout
+│   │   ├── lib/                       ← Auth store, storage, icon mapping
+│   │   ├── assets/                    ← App icons, splash screen, fonts
+│   │   └── app.json                   ← Expo config (iOS + Android)
+│   │
+│   └── desktop/                ← Tauri 2.0 (native wrapper) — scaffolded
+│       ├── src-tauri/
+│       │   ├── src/lib.rs             ← System tray menu (Show/Quit)
+│       │   ├── tauri.conf.json        ← Window config (1280×800), CSP, icons
+│       │   ├── Cargo.toml             ← Rust dependencies
+│       │   ├── capabilities/          ← Tauri security capabilities
+│       │   └── icons/                 ← App icons (ico, icns, png)
+│       └── package.json               ← Tauri CLI scripts (dev, build)
+│
+├── packages/
+│   └── shared/                 ← Shared code (used by web + mobile)
+│       └── src/
+│           ├── types.ts               ← TypeScript types (User, Invoice, Module)
+│           ├── mock-data.ts           ← Demo data (users, invoices, modules)
+│           ├── stores/auth-store.ts   ← Zustand auth store (shared logic)
+│           └── index.ts               ← Public exports
 │
 ├── turbo.json                  ← Turborepo config
-├── pnpm-workspace.yaml        ← Workspace definition
-└── package.json                ← Root scripts
+├── pnpm-workspace.yaml        ← Workspace definition (apps/*, packages/*)
+└── package.json                ← Root scripts (dev, dev:web, dev:mobile, dev:desktop)
 ```
 
 ---
@@ -301,12 +504,15 @@ The `.claude/pre-requisites/technology-stack-decision.md` document contains the 
 ## Roadmap
 
 - [x] Phase 1: Technology Research & Stack Selection
-- [x] Phase 2: MVP Implementation (Web + PWA)
-- [ ] Phase 3: Expo Mobile App (iOS + Android)
-- [ ] Phase 4: Tauri Desktop Wrapper
+- [x] Phase 2a: MVP Web Application (Next.js + PWA)
+- [x] Phase 2b: Shared Packages (types, mock data, auth store)
+- [x] Phase 3: Expo Mobile App — scaffolded (login, dashboard, invoices, profile)
+- [x] Phase 4: Tauri Desktop Wrapper — scaffolded (system tray, window config, icons)
 - [ ] Phase 5: Full Design System (Storybook)
 - [ ] Phase 6: eFakt2 Migration
 - [ ] Phase 7: cvs_ls26 Migration
+
+> **Phases 3 & 4** are scaffolded with working app shells, navigation, and shared data. They need dependency installation and platform toolchain setup to run (see "How to Test Each Platform" above).
 
 ---
 
