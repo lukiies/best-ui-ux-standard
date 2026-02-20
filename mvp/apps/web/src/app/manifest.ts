@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next";
 
+// Required for Next.js static export (output: "export") used by Tauri desktop builds
+export const dynamic = "force-static";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "UI/UX Standard \u2014 Enterprise Platform",
