@@ -41,8 +41,10 @@ Thumbs.db
 desktop.ini
 
 # IDE
-.vscode/settings.json
 .idea/
+# .NET build artifacts
+**/obj/
+**/bin/
 
 # Lock files (pnpm monorepo — only pnpm-lock.yaml matters)
 package-lock.json
