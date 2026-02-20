@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "identifier": "com.uiux-standard.desktop",
   "build": {
-    "beforeDevCommand": "cd ../../web && pnpm dev",
+    "beforeDevCommand": "",
     "devUrl": "http://localhost:3000",
-    "beforeBuildCommand": "node ../../../scripts/build-desktop-frontend.js",
-    "frontendDist": "../../web/out"
+    "beforeBuildCommand": "",
+    "frontendDist": "http://localhost:3000"
   },
   "app": {
     "windows": [
@@ -25,7 +25,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; connect-src 'self' http://localhost:3000 https://* tauri://localhost; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3000; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*; font-src 'self' data: https://*"
+      "csp": "default-src 'self'; connect-src 'self' http://localhost:3000 https://*; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3000; style-src 'self' 'unsafe-inline' http://localhost:3000; img-src 'self' data: http://localhost:3000; font-src 'self' data: http://localhost:3000 https://*"
     }
   },
   "bundle": {

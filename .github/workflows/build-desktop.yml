@@ -5,9 +5,7 @@ on:
     branches: [main]
     paths:
       - 'mvp/apps/desktop/**'
-      - 'mvp/apps/web/**'
       - 'mvp/packages/**'
-      - 'mvp/scripts/**'
       - '.github/workflows/build-desktop.yml'
   workflow_dispatch:
 
@@ -15,6 +13,9 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  BINARY_NAME: uiux-standard-desktop
 
 jobs:
   build-tauri:
@@ -54,7 +55,12 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq             libwebkit2gtk-4.1-dev             libgtk-3-dev             libayatana-appindicator3-dev             librsvg2-dev             libssl-dev
+          sudo apt-get install -y -qq \
+            libwebkit2gtk-4.1-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            libssl-dev
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -70,22 +76,16 @@ jobs:
         working-directory: mvp
         run: pnpm install --frozen-lockfile
 
-      # tauri build runs beforeBuildCommand (builds Next.js static export)
-      # then compiles Rust and bundles everything into an installer
-      - name: Build Tauri application
-        working-directory: mvp/apps/desktop
-        run: pnpm tauri build --target ${{ matrix.target }}
+      - name: Build Tauri binary
+        working-directory: mvp/apps/desktop/src-tauri
+        run: cargo build --release --target ${{ matrix.target }}
 
       - name: Prepare artifacts (Unix)
-        if: runner.os \!= 'Windows'
+        if: runner.os != 'Windows'
         run: |
           mkdir -p artifacts
-          BUNDLE_DIR="mvp/apps/desktop/src-tauri/target/${{ matrix.target }}/release/bundle"
           BIN_DIR="mvp/apps/desktop/src-tauri/target/${{ matrix.target }}/release"
-          cp "$BIN_DIR/uiux-standard-desktop" artifacts/ 2>/dev/null || true
-          cp "$BUNDLE_DIR"/appimage/*.AppImage artifacts/ 2>/dev/null || true
-          cp "$BUNDLE_DIR"/deb/*.deb artifacts/ 2>/dev/null || true
-          cp "$BUNDLE_DIR"/dmg/*.dmg artifacts/ 2>/dev/null || true
+          cp "$BIN_DIR/$BINARY_NAME" artifacts/ 2>/dev/null || true
           chmod +x artifacts/* 2>/dev/null || true
           ls -la artifacts/
 
@@ -94,11 +94,8 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path artifacts
-          $bundleDir = "mvp/apps/desktop/src-tauri/target/${{ matrix.target }}/release/bundle"
           $binDir = "mvp/apps/desktop/src-tauri/target/${{ matrix.target }}/release"
-          Copy-Item "$binDir/uiux-standard-desktop.exe" -Destination "artifacts/" -ErrorAction SilentlyContinue
-          Copy-Item "$bundleDir/nsis/*.exe" -Destination "artifacts/" -ErrorAction SilentlyContinue
-          Copy-Item "$bundleDir/msi/*.msi" -Destination "artifacts/" -ErrorAction SilentlyContinue
+          Copy-Item "$binDir/$env:BINARY_NAME.exe" -Destination "artifacts/"
           Get-ChildItem artifacts/
 
       - name: Upload build artifact
