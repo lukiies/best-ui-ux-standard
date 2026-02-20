@@ -7,7 +7,7 @@
     "beforeDevCommand": "",
     "devUrl": "http://localhost:3000",
     "beforeBuildCommand": "",
-    "frontendDist": "http://localhost:3000"
+    "frontendDist": "http://uiux.robak.net.pl"
   },
   "app": {
     "windows": [
@@ -25,7 +25,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; connect-src 'self' http://localhost:3000 https://*; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3000; style-src 'self' 'unsafe-inline' http://localhost:3000; img-src 'self' data: http://localhost:3000; font-src 'self' data: http://localhost:3000 https://*"
+      "csp": "default-src 'self' http://uiux.robak.net.pl; connect-src 'self' http://uiux.robak.net.pl https://*; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://uiux.robak.net.pl; style-src 'self' 'unsafe-inline' http://uiux.robak.net.pl; img-src 'self' data: http://uiux.robak.net.pl https://*; font-src 'self' data: http://uiux.robak.net.pl https://*"
     }
   },
   "bundle": {
