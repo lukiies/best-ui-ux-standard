@@ -9,7 +9,6 @@ on:
       - '.github/workflows/build-desktop.yml'
   workflow_dispatch:
 
-# Cancel in-progress runs for the same branch
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -49,7 +48,7 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: mvp/apps/desktop/src-tauri -> target
-          key: ${{ matrix.target }}
+          key: ${{ matrix.target }}-v2
 
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
@@ -76,16 +75,20 @@ jobs:
         working-directory: mvp
         run: pnpm install --frozen-lockfile
 
-      - name: Build Tauri binary
-        working-directory: mvp/apps/desktop/src-tauri
-        run: cargo build --release --target ${{ matrix.target }}
+      - name: Build Tauri application
+        working-directory: mvp/apps/desktop
+        run: pnpm tauri build --target ${{ matrix.target }}
 
       - name: Prepare artifacts (Unix)
         if: runner.os != 'Windows'
         run: |
           mkdir -p artifacts
+          BUNDLE_DIR="mvp/apps/desktop/src-tauri/target/${{ matrix.target }}/release/bundle"
           BIN_DIR="mvp/apps/desktop/src-tauri/target/${{ matrix.target }}/release"
           cp "$BIN_DIR/$BINARY_NAME" artifacts/ 2>/dev/null || true
+          cp "$BUNDLE_DIR"/appimage/*.AppImage artifacts/ 2>/dev/null || true
+          cp "$BUNDLE_DIR"/deb/*.deb artifacts/ 2>/dev/null || true
+          cp "$BUNDLE_DIR"/dmg/*.dmg artifacts/ 2>/dev/null || true
           chmod +x artifacts/* 2>/dev/null || true
           ls -la artifacts/
 
@@ -94,8 +97,11 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path artifacts
+          $bundleDir = "mvp/apps/desktop/src-tauri/target/${{ matrix.target }}/release/bundle"
           $binDir = "mvp/apps/desktop/src-tauri/target/${{ matrix.target }}/release"
-          Copy-Item "$binDir/$env:BINARY_NAME.exe" -Destination "artifacts/"
+          Copy-Item "$binDir/$env:BINARY_NAME.exe" -Destination "artifacts/" -ErrorAction SilentlyContinue
+          Copy-Item "$bundleDir/nsis/*.exe" -Destination "artifacts/" -ErrorAction SilentlyContinue
+          Copy-Item "$bundleDir/msi/*.msi" -Destination "artifacts/" -ErrorAction SilentlyContinue
           Get-ChildItem artifacts/
 
       - name: Upload build artifact
